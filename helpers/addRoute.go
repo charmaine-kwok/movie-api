@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddRoute(route string, modelName string, model models.Model, router *gin.Engine) {
+func AddRoute(route string, modelName string, model models.Model, apiGroup *gin.RouterGroup) {
 	handler := controllers.GetAllWrapper(modelName, model)
-	router.GET(route, handler)
+	apiGroup.GET(route, handler)
 }

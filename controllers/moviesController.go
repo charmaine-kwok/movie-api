@@ -13,6 +13,24 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// swagger:model MovieInformationResponse
+type MovieInformationResponse struct {
+	Items       []models.Movie `json:"items"`
+	TotalItem   int            `json:"totalItem"`
+	TotalPage   int            `json:"totalPage"`
+	CurrentPage int            `json:"currentPage"`
+}
+
+// @Summary Get a list of movie information by type
+// @Tags Get All
+// @Description Get a list of movie information by type
+// @Accept json
+// @Produce json
+// @Param type path string true "Movies"
+// @Success 200 {object} MovieInformationResponse "Movie Information"
+// @Failure 400 {string} string "Invalid type"
+// @Failure 500 {string} string "Internal server error"
+// @Router /{type} [get]
 func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Create a context with a timeout

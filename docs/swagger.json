@@ -1,0 +1,116 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is an API server for communication between mobile application and MongoDB Database",
+        "title": "Movie App",
+        "contact": {
+            "name": "charmaine.kwok"
+        },
+        "license": {
+            "name": "Apache 2.0"
+        },
+        "version": "1.0.0"
+    },
+    "host": "localhost:3002",
+    "basePath": "/api",
+    "paths": {
+        "/{type}": {
+            "get": {
+                "description": "Get a list of movie information by type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Get All"
+                ],
+                "summary": "Get a list of movie information by type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Movies",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movie Information",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MovieInformationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid type",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.MovieInformationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Movie"
+                    }
+                },
+                "totalItem": {
+                    "type": "integer"
+                },
+                "totalPage": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Movie": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "pic": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "string"
+                },
+                "title_en": {
+                    "type": "string"
+                },
+                "title_zh": {
+                    "type": "string"
+                },
+                "wiki_url": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

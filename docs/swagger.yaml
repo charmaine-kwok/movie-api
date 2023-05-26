@@ -1,0 +1,77 @@
+basePath: /api
+definitions:
+  controllers.MovieInformationResponse:
+    properties:
+      currentPage:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/models.Movie'
+        type: array
+      totalItem:
+        type: integer
+      totalPage:
+        type: integer
+    type: object
+  models.Movie:
+    properties:
+      date:
+        type: string
+      desc:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      pic:
+        type: string
+      rating:
+        type: string
+      title_en:
+        type: string
+      title_zh:
+        type: string
+      wiki_url:
+        type: string
+    type: object
+host: localhost:3002
+info:
+  contact:
+    name: charmaine.kwok
+  description: This is an API server for communication between mobile application
+    and MongoDB Database
+  license:
+    name: Apache 2.0
+  title: Movie App
+  version: 1.0.0
+paths:
+  /{type}:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of movie information by type
+      parameters:
+      - description: Movies
+        in: path
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movie Information
+          schema:
+            $ref: '#/definitions/controllers.MovieInformationResponse'
+        "400":
+          description: Invalid type
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Get a list of movie information by type
+      tags:
+      - Get All
+swagger: "2.0"
