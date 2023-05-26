@@ -1,8 +1,9 @@
 package main
 
 import (
-	"go-crud/controllers"
+	"go-crud/helpers"
 	"go-crud/initializers"
+	"go-crud/models"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -21,8 +22,8 @@ func main() {
 	}
 
 	r := gin.Default()
-	r.GET("/movies", controllers.GetAllWrapper("Movies"))
-	r.GET("/non-movies", controllers.GetAllWrapper("Non-movies"))
-	r.GET("/others", controllers.GetAllWrapper("Others"))
+	helpers.AddRoute("/movies", "Movies", &models.Movie{}, r)
+	helpers.AddRoute("/non-movies", "Non-movies", &models.Other{}, r)
+	helpers.AddRoute("/others", "Others", &models.Other{}, r)
 	r.Run()
 }

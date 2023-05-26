@@ -4,6 +4,7 @@ import (
 	"context"
 	"go-crud/initializers"
 	"go-crud/models"
+	"reflect"
 	"strconv"
 	"time"
 
@@ -12,7 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func GetAllWrapper(collectionName string) gin.HandlerFunc {
+func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Create a context with a timeout
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -36,13 +37,14 @@ func GetAllWrapper(collectionName string) gin.HandlerFunc {
 		findOptions.SetSkip(skip)
 
 		// Get the movies
-		var movies []models.Movie
+		// var movies []models.Movie
+		var items []models.Model
 		totalItem, err := initializers.DB.Collection(collectionName).CountDocuments(ctx, bson.M{})
 		totalPage := (totalItem-1)/limit + 1
 
 		if err != nil {
 			c.JSON(500, gin.H{
-				"error": "Error getting totla number of movies",
+				"error": "Error getting total number of movies",
 			})
 			return
 		}
@@ -57,20 +59,24 @@ func GetAllWrapper(collectionName string) gin.HandlerFunc {
 
 		// Iterate through the cursor and decode each document into the movies slice
 		for cursor.Next(ctx) {
-			var movie models.Movie
-			err := cursor.Decode(&movie)
+			// var movie models.Movie
+			// err := cursor.Decode(&movie)
+			item := reflect.New(reflect.TypeOf(model).Elem()).Interface().(models.Model)
+			err := cursor.Decode(item)
 			if err != nil {
 				c.JSON(500, gin.H{
 					"error": "Error decoding movie document",
 				})
 				return
 			}
-			movies = append(movies, movie)
+			// movies = append(movies, movie)
+			items = append(items, item)
 		}
 
 		// Respond with the movies
 		c.JSON(200, gin.H{
-			"movies":      movies,
+			// "items":       movies,
+			"items":       items,
 			"totalItem":   totalItem,
 			"totalPage":   totalPage,
 			"currentPage": page,
