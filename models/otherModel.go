@@ -14,6 +14,6 @@ type Other struct {
 	Pic      string        `json:"pic"`
 }
 
-func (m *Other) GetID() string {
-	return m.ID.Hex()
+func (m *Other) GetTitle() string {
+	return m.Title
 }

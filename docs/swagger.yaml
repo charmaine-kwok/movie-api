@@ -2,6 +2,11 @@ basePath: /api
 definitions:
   controllers.MovieInformationResponse:
     properties:
+      item:
+        $ref: '#/definitions/models.Movie'
+    type: object
+  controllers.MoviesInformationResponse:
+    properties:
       currentPage:
         type: integer
       items:
@@ -34,7 +39,7 @@ definitions:
       wiki_url:
         type: string
     type: object
-host: localhost:3002
+host: localhost:8080
 info:
   contact:
     name: charmaine.kwok
@@ -51,9 +56,47 @@ paths:
       - application/json
       description: Get a list of movie information by type
       parameters:
-      - description: Movies
+      - description: Type
         in: path
         name: type
+        required: true
+        type: string
+      - description: Page Number
+        in: query
+        name: page
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movies Information
+          schema:
+            $ref: '#/definitions/controllers.MoviesInformationResponse'
+        "400":
+          description: Invalid type
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Get a list of movie information by type
+      tags:
+      - Get All
+  /{type}/movie/{title}:
+    get:
+      consumes:
+      - application/json
+      description: Get movie information by Title
+      parameters:
+      - description: Type
+        in: path
+        name: type
+        required: true
+        type: string
+      - description: Title
+        in: path
+        name: title
         required: true
         type: string
       produces:
@@ -71,7 +114,7 @@ paths:
           description: Internal server error
           schema:
             type: string
-      summary: Get a list of movie information by type
+      summary: Get movie information by Title
       tags:
-      - Get All
+      - Get Movie by Title
 swagger: "2.0"

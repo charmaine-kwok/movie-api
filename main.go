@@ -2,9 +2,8 @@ package main
 
 import (
 	docs "go-crud/docs"
-	"go-crud/helpers"
 	"go-crud/initializers"
-	"go-crud/models"
+	"go-crud/routes"
 	"log"
 
 	swaggerFiles "github.com/swaggo/files"
@@ -22,7 +21,7 @@ func init() {
 //	@title				     	Movie App
 //	@version					1.0.0
 //	@description				This is an API server for communication between mobile application and MongoDB Database
-//	@host						localhost:3002
+//	@host						localhost:8080
 //	@BasePath					/api
 //
 // @contact.name charmaine.kwok
@@ -37,12 +36,12 @@ func main() {
 	r := gin.Default()
 	docs.SwaggerInfo.BasePath = "/api"
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiGroup := r.Group("/api")
 	{
-		helpers.AddRoute("/movies", "Movies", &models.Movie{}, apiGroup)
-		helpers.AddRoute("/non-movies", "Non-movies", &models.Other{}, apiGroup)
-		helpers.AddRoute("/others", "Others", &models.Other{}, apiGroup)
+		apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		routes.SetupMovieRoutes(apiGroup)
+		routes.SetupNonMoviesRoutes(apiGroup)
+		routes.SetupOthersRoutes(apiGroup)
 	}
 	r.Run()
 }

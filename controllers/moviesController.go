@@ -4,21 +4,26 @@ import (
 	"context"
 	"go-crud/initializers"
 	"go-crud/models"
+	"net/http"
 	"reflect"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // swagger:model MovieInformationResponse
-type MovieInformationResponse struct {
+type MoviesInformationResponse struct {
 	Items       []models.Movie `json:"items"`
 	TotalItem   int            `json:"totalItem"`
 	TotalPage   int            `json:"totalPage"`
 	CurrentPage int            `json:"currentPage"`
+}
+type MovieInformationResponse struct {
+	Item models.Movie `json:"item"`
 }
 
 // @Summary Get a list of movie information by type
@@ -26,8 +31,11 @@ type MovieInformationResponse struct {
 // @Description Get a list of movie information by type
 // @Accept json
 // @Produce json
-// @Param type path string true "Movies"
-// @Success 200 {object} MovieInformationResponse "Movie Information"
+// @Param type path string true "Type"
+//
+// @Param page query string false "Page Number"
+//
+// @Success 200 {object} MoviesInformationResponse "Movies Information"
 // @Failure 400 {string} string "Invalid type"
 // @Failure 500 {string} string "Internal server error"
 // @Router /{type} [get]
@@ -54,8 +62,6 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 		findOptions.SetLimit(limit)
 		findOptions.SetSkip(skip)
 
-		// Get the movies
-		// var movies []models.Movie
 		var items []models.Model
 		totalItem, err := initializers.DB.Collection(collectionName).CountDocuments(ctx, bson.M{})
 		totalPage := (totalItem-1)/limit + 1
@@ -77,12 +83,10 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 
 		// Iterate through the cursor and decode each document into the movies slice
 		for cursor.Next(ctx) {
-			// var movie models.Movie
-			// err := cursor.Decode(&movie)
 			item := reflect.New(reflect.TypeOf(model).Elem()).Interface().(models.Model)
 			err := cursor.Decode(item)
 			if err != nil {
-				c.JSON(500, gin.H{
+				c.JSON(http.StatusInternalServerError, gin.H{
 					"error": "Error decoding movie document",
 				})
 				return
@@ -92,12 +96,57 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 		}
 
 		// Respond with the movies
-		c.JSON(200, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			// "items":       movies,
 			"items":       items,
 			"totalItem":   totalItem,
 			"totalPage":   totalPage,
 			"currentPage": page,
+		})
+	}
+}
+
+// @Summary Get movie information by Title
+// @Tags Get Movie by Title
+// @Description Get movie information by Title
+// @Accept json
+// @Produce json
+// @Param type path string true "Type"
+// @Param title path string true "Title"
+//
+// @Success 200 {object} MovieInformationResponse "Movie Information"
+// @Failure 400 {string} string "Invalid type"
+// @Failure 500 {string} string "Internal server error"
+// @Router /{type}/movie/{title} [get]
+func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Create a context with a timeout
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		titleName := c.Param("title")
+		var item models.Movie
+
+		// Use FindOne with bson.M for the filter
+		filter := bson.M{"title_en": titleName}
+		err := initializers.DB.Collection(collectionName).FindOne(ctx, filter).Decode(&item)
+
+		if err != nil {
+			if err == mongo.ErrNoDocuments {
+				c.JSON(http.StatusNotFound, gin.H{
+					"error": "No movie found with the given title",
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error": "Error fetching movie",
+				})
+			}
+			return
+		}
+
+		// Respond with the movie
+		c.JSON(http.StatusOK, gin.H{
+			"item": item,
 		})
 	}
 }

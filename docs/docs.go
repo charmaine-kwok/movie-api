@@ -37,8 +37,65 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Movies",
+                        "description": "Type",
                         "name": "type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page Number",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movies Information",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MoviesInformationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid type",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/{type}/movie/{title}": {
+            "get": {
+                "description": "Get movie information by Title",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Get Movie by Title"
+                ],
+                "summary": "Get movie information by Title",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Type",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Title",
+                        "name": "title",
                         "in": "path",
                         "required": true
                     }
@@ -68,6 +125,14 @@ const docTemplate = `{
     },
     "definitions": {
         "controllers.MovieInformationResponse": {
+            "type": "object",
+            "properties": {
+                "item": {
+                    "$ref": "#/definitions/models.Movie"
+                }
+            }
+        },
+        "controllers.MoviesInformationResponse": {
             "type": "object",
             "properties": {
                 "currentPage": {
@@ -125,7 +190,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0.0",
-	Host:             "localhost:3002",
+	Host:             "localhost:8080",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Movie App",

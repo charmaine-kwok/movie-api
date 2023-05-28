@@ -5,7 +5,7 @@ import (
 )
 
 type Model interface {
-	GetID() string
+	GetTitle() string
 }
 
 type Movie struct {
@@ -20,6 +20,6 @@ type Movie struct {
 	Wiki_url string        `json:"wiki_url"`
 }
 
-func (m *Movie) GetID() string {
-	return m.ID.Hex()
+func (m *Movie) GetTitle() string {
+	return m.Title_en
 }
