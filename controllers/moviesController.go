@@ -27,7 +27,7 @@ type MovieInformationResponse struct {
 }
 
 // @Summary Get a list of movie information by type
-// @Tags Get All
+// @Tags Movies
 // @Description Get a list of movie information by type
 // @Accept json
 // @Produce json
@@ -36,9 +36,9 @@ type MovieInformationResponse struct {
 // @Param page query string false "Page Number"
 //
 // @Success 200 {object} MoviesInformationResponse "Movies Information"
-// @Failure 400 {string} string "Invalid type"
-// @Failure 500 {string} string "Internal server error"
-// @Router /{type} [get]
+// @Failure 400  "Invalid type"
+// @Failure 500  "Internal server error"
+// @Router /movies/{type} [get]
 func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Create a context with a timeout
@@ -107,7 +107,7 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 }
 
 // @Summary Get movie information by Title
-// @Tags Get Movie by Title
+// @Tags Movies
 // @Description Get movie information by Title
 // @Accept json
 // @Produce json
@@ -115,9 +115,9 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 // @Param title path string true "Title"
 //
 // @Success 200 {object} MovieInformationResponse "Movie Information"
-// @Failure 400 {string} string "Invalid type"
-// @Failure 500 {string} string "Internal server error"
-// @Router /{type}/movie/{title} [get]
+// @Failure 400  "Invalid type"
+// @Failure 500  "Internal server error"
+// @Router /movies/{type}/details/{title} [get]
 func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Create a context with a timeout
@@ -129,7 +129,7 @@ func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
 		// Determine the filter based on the model type
 		var filter bson.M
 		switch model.(type) {
-		case *models.Other:
+		case *models.NonMovie:
 			filter = bson.M{"title": titleName}
 		case *models.Movie:
 			filter = bson.M{"title_en": titleName}

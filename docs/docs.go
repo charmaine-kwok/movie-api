@@ -21,7 +21,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/{type}": {
+        "/movies/{type}": {
             "get": {
                 "description": "Get a list of movie information by type",
                 "consumes": [
@@ -31,7 +31,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Get All"
+                    "Movies"
                 ],
                 "summary": "Get a list of movie information by type",
                 "parameters": [
@@ -57,21 +57,15 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Invalid type",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Invalid type"
                     },
                     "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Internal server error"
                     }
                 }
             }
         },
-        "/{type}/movie/{title}": {
+        "/movies/{type}/details/{title}": {
             "get": {
                 "description": "Get movie information by Title",
                 "consumes": [
@@ -81,7 +75,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Get Movie by Title"
+                    "Movies"
                 ],
                 "summary": "Get movie information by Title",
                 "parameters": [
@@ -108,16 +102,85 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Invalid type",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "description": "Invalid type"
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/non-movies": {
+            "get": {
+                "description": "Get a list of non-movies information by type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Non-movies"
+                ],
+                "summary": "Get a list of non-movies information by type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Page Number",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.NonMovieListInformationResponse"
                         }
+                    },
+                    "400": {
+                        "description": "Invalid type"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/non-movies/details/{title}": {
+            "get": {
+                "description": "Get non-movie information by Title",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Non-movies"
+                ],
+                "summary": "Get non-movie information by Title",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Title",
+                        "name": "title",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Non-Movie Information",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.NonMovieInformationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid type"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 }
             }
@@ -142,6 +205,34 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Movie"
+                    }
+                },
+                "totalItem": {
+                    "type": "integer"
+                },
+                "totalPage": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.NonMovieInformationResponse": {
+            "type": "object",
+            "properties": {
+                "item": {
+                    "$ref": "#/definitions/models.NonMovie"
+                }
+            }
+        },
+        "controllers.NonMovieListInformationResponse": {
+            "type": "object",
+            "properties": {
+                "currentPage": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.NonMovie"
                     }
                 },
                 "totalItem": {
@@ -180,6 +271,32 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "wiki_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.NonMovie": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "pic": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }

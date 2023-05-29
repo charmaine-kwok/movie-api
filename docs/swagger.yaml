@@ -18,6 +18,24 @@ definitions:
       totalPage:
         type: integer
     type: object
+  controllers.NonMovieInformationResponse:
+    properties:
+      item:
+        $ref: '#/definitions/models.NonMovie'
+    type: object
+  controllers.NonMovieListInformationResponse:
+    properties:
+      currentPage:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/models.NonMovie'
+        type: array
+      totalItem:
+        type: integer
+      totalPage:
+        type: integer
+    type: object
   models.Movie:
     properties:
       date:
@@ -39,6 +57,23 @@ definitions:
       wiki_url:
         type: string
     type: object
+  models.NonMovie:
+    properties:
+      date:
+        type: string
+      desc:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      pic:
+        type: string
+      rating:
+        type: string
+      title:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -50,7 +85,7 @@ info:
   title: Movie App
   version: 1.0.0
 paths:
-  /{type}:
+  /movies/{type}:
     get:
       consumes:
       - application/json
@@ -74,16 +109,12 @@ paths:
             $ref: '#/definitions/controllers.MoviesInformationResponse'
         "400":
           description: Invalid type
-          schema:
-            type: string
         "500":
           description: Internal server error
-          schema:
-            type: string
       summary: Get a list of movie information by type
       tags:
-      - Get All
-  /{type}/movie/{title}:
+      - Movies
+  /movies/{type}/details/{title}:
     get:
       consumes:
       - application/json
@@ -108,13 +139,58 @@ paths:
             $ref: '#/definitions/controllers.MovieInformationResponse'
         "400":
           description: Invalid type
-          schema:
-            type: string
         "500":
           description: Internal server error
-          schema:
-            type: string
       summary: Get movie information by Title
       tags:
-      - Get Movie by Title
+      - Movies
+  /non-movies:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of non-movies information by type
+      parameters:
+      - description: Page Number
+        in: query
+        name: page
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Information
+          schema:
+            $ref: '#/definitions/controllers.NonMovieListInformationResponse'
+        "400":
+          description: Invalid type
+        "500":
+          description: Internal server error
+      summary: Get a list of non-movies information by type
+      tags:
+      - Non-movies
+  /non-movies/details/{title}:
+    get:
+      consumes:
+      - application/json
+      description: Get non-movie information by Title
+      parameters:
+      - description: Title
+        in: path
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Non-Movie Information
+          schema:
+            $ref: '#/definitions/controllers.NonMovieInformationResponse'
+        "400":
+          description: Invalid type
+        "500":
+          description: Internal server error
+      summary: Get non-movie information by Title
+      tags:
+      - Non-movies
 swagger: "2.0"

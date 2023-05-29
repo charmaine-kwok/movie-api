@@ -8,6 +8,6 @@ import (
 )
 
 func SetupOthersRoutes(apiGroup *gin.RouterGroup) {
-	apiGroup.GET("/others/details/:title", controllers.GetByTitle("Others", &models.Movie{}))
-	apiGroup.GET("/others", controllers.GetAllWrapper("Others", &models.Movie{}))
+	apiGroup.GET("/movies/others/details/:title", controllers.GetByTitle("Others", &models.Movie{}))
+	apiGroup.GET("/movies/others", controllers.GetAllWrapper("Others", &models.Movie{}))
 }
