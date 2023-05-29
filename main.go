@@ -4,13 +4,12 @@ import (
 	docs "go-crud/docs"
 	"go-crud/initializers"
 	"go-crud/routes"
-	"log"
+	"os"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func init() {
@@ -28,20 +27,30 @@ func init() {
 // @license.name Apache 2.0
 // schemes http
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	// Read the environment variable and set the Gin mode based on the environment variable
+	if env := os.Getenv("GIN_MODE"); env == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
 	}
 
+	// Create a new Gin router
 	r := gin.Default()
-	docs.SwaggerInfo.BasePath = "/api"
 
+	docs.SwaggerInfo.BasePath = "/api"
 	apiGroup := r.Group("/api")
 	{
+		// Add Swagger documentation endpoint
 		apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+		// Register the movies routes
 		routes.SetupMovieRoutes(apiGroup)
+		// Register the non-movies routes
 		routes.SetupNonMoviesRoutes(apiGroup)
+		// Register the others routes
 		routes.SetupOthersRoutes(apiGroup)
 	}
-	r.Run()
+
+	// Start the server
+	r.Run(":8080")
 }
