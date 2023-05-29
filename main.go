@@ -13,7 +13,7 @@ import (
 )
 
 func init() {
-	initializers.LoadEnvVariables()
+	// initializers.LoadEnvVariables()
 	initializers.ConnectToDB()
 }
 
@@ -21,11 +21,11 @@ func init() {
 //	@version					1.0.0
 //	@description				This is an API server for communication between mobile application and MongoDB Database
 //	@host						localhost:8080
-//	@BasePath					/api
+//	@BasePath					go-crud.fly.dev/api
 //
 // @contact.name charmaine.kwok
 // @license.name Apache 2.0
-// schemes http
+// schemes https
 func main() {
 	// Read the environment variable and set the Gin mode based on the environment variable
 	if env := os.Getenv("GIN_MODE"); env == "release" {

@@ -12,7 +12,7 @@
         "version": "1.0.0"
     },
     "host": "localhost:8080",
-    "basePath": "/api",
+    "basePath": "go-crud.fly.dev/api",
     "paths": {
         "/movies/{type}": {
             "get": {

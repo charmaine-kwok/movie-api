@@ -1,4 +1,4 @@
-basePath: /api
+basePath: go-crud.fly.dev/api
 definitions:
   controllers.MovieInformationResponse:
     properties:

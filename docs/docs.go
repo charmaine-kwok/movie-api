@@ -308,7 +308,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api",
+	BasePath:         "go-crud.fly.dev/api",
 	Schemes:          []string{},
 	Title:            "Movie App",
 	Description:      "This is an API server for communication between mobile application and MongoDB Database",
