@@ -68,14 +68,14 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 
 		if err != nil {
 			c.JSON(500, gin.H{
-				"error": "Error getting total number of movies",
+				"error": "Error getting total number of items",
 			})
 			return
 		}
 		cursor, err := initializers.DB.Collection(collectionName).Find(ctx, bson.M{}, findOptions)
 		if err != nil {
 			c.JSON(500, gin.H{
-				"error": "Error fetching movies",
+				"error": "Error fetching items",
 			})
 			return
 		}
@@ -87,7 +87,7 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 			err := cursor.Decode(item)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{
-					"error": "Error decoding movie document",
+					"error": "Error decoding document",
 				})
 				return
 			}
@@ -125,20 +125,30 @@ func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
 		defer cancel()
 
 		titleName := c.Param("title")
-		var item models.Movie
 
-		// Use FindOne with bson.M for the filter
-		filter := bson.M{"title_en": titleName}
-		err := initializers.DB.Collection(collectionName).FindOne(ctx, filter).Decode(&item)
+		// Determine the filter based on the model type
+		var filter bson.M
+		switch model.(type) {
+		case *models.Other:
+			filter = bson.M{"title": titleName}
+		case *models.Movie:
+			filter = bson.M{"title_en": titleName}
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Invalid model type",
+			})
+			return
+		}
+		err := initializers.DB.Collection(collectionName).FindOne(ctx, filter).Decode(model)
 
 		if err != nil {
 			if err == mongo.ErrNoDocuments {
 				c.JSON(http.StatusNotFound, gin.H{
-					"error": "No movie found with the given title",
+					"error": "No item found with the given title",
 				})
 			} else {
 				c.JSON(http.StatusInternalServerError, gin.H{
-					"error": "Error fetching movie",
+					"error": "Error fetching item",
 				})
 			}
 			return
@@ -146,7 +156,7 @@ func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
 
 		// Respond with the movie
 		c.JSON(http.StatusOK, gin.H{
-			"item": item,
+			"item": model,
 		})
 	}
 }

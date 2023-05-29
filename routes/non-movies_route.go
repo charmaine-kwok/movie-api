@@ -8,5 +8,6 @@ import (
 )
 
 func SetupNonMoviesRoutes(apiGroup *gin.RouterGroup) {
+	apiGroup.GET("/non-movies/details/:title", controllers.GetByTitle("Non-movies", &models.Other{}))
 	apiGroup.GET("/non-movies", controllers.GetAllWrapper("Non-movies", &models.Other{}))
 }
