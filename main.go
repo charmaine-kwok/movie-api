@@ -20,8 +20,8 @@ func init() {
 //	@title				     	Movie App
 //	@version					1.0.0
 //	@description				This is an API server for communication between mobile application and MongoDB Database
-//	@host						localhost:8080
-//	@BasePath					go-crud.fly.dev/api
+//	@host						go-crud.fly.dev
+//	@BasePath					/api
 //
 // @contact.name charmaine.kwok
 // @license.name Apache 2.0
