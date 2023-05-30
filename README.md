@@ -1,5 +1,15 @@
 # API Server for my mobile movie app
 
+## Overview
+
+This Go Gin API is a RESTful web service built using the [Gin Web Framework](https://go.dev/doc/tutorial/web-service-gin) (Gin).
+
+## API Usage
+
+To access the API, use the following URL: [https://go-crud.fly.dev/api](https://go-crud.fly.dev/api)
+
+## To use locally --
+
 ## Prerequisite
 
 - Go version: `go1.20.2 darwin/amd64`
