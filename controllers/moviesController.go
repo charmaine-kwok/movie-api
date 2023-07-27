@@ -31,7 +31,7 @@ type MovieInformationResponse struct {
 // @Description Get a list of movie information by type
 // @Accept json
 // @Produce json
-// @Param type path string true "Type"
+// @Param type path string true "Type" Enums(movies, others)
 //
 // @Param page query string false "Page Number"
 //
@@ -111,7 +111,7 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 // @Description Get movie information by Title
 // @Accept json
 // @Produce json
-// @Param type path string true "Type"
+// @Param type path string true "Type" Enums(movies, others)
 // @Param title path string true "Title"
 //
 // @Success 200 {object} MovieInformationResponse "Movie Information"
