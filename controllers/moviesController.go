@@ -15,8 +15,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type PostMovieRequest models.Movie
-
 // swagger:model MovieInformationResponse
 type MoviesInformationResponse struct {
 	Items       []models.Movie `json:"items"`
@@ -169,8 +167,14 @@ func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param type path string true "Type" Enums(movies, others)
-// @Param RequestBody body PostMovieRequest true "Movie Information"
-
+// @param title_zh formData string true "Chinese title"
+// @param title_en formData string true "English title"
+// @param desc formData string true "Description"
+// @param location formData string true "Location"
+// @param date formData string true "Date"
+// @param rating formData string true "Rating"
+// @param pic formData string true "Pic link"
+// @param wiki_url formData string true "Wiki url"
 // @Success 200 {object} MovieInformationResponse "Movie Information"
 // @Failure 400  "Invalid request body"
 // @Failure 500  "Internal server error"
@@ -181,7 +185,7 @@ func CreateMovie(collectionName string) gin.HandlerFunc {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 
-		var req PostMovieRequest
+		var req models.Movie
 		// Bind the request body to the movie model
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{

@@ -36,25 +36,6 @@ definitions:
       totalPage:
         type: integer
     type: object
-  controllers.PostMovieRequest:
-    properties:
-      date:
-        type: string
-      desc:
-        type: string
-      location:
-        type: string
-      pic:
-        type: string
-      rating:
-        type: string
-      title_en:
-        type: string
-      title_zh:
-        type: string
-      wiki_url:
-        type: string
-    type: object
   models.Movie:
     properties:
       date:
@@ -94,10 +75,10 @@ info:
   contact:
     name: charmaine.kwok
   description: This is an API server for communication between mobile application
-    and MongoDB Database
+    and MongoDB Database.
   license:
     name: Apache 2.0
-  title: Movie App
+  title: Movie Api
   version: 1.0.0
 paths:
   /movies/{type}:
@@ -145,12 +126,46 @@ paths:
         name: type
         required: true
         type: string
-      - description: Movie Information
-        in: body
-        name: RequestBody
+      - description: Chinese title
+        in: formData
+        name: title_zh
         required: true
-        schema:
-          $ref: '#/definitions/controllers.PostMovieRequest'
+        type: string
+      - description: English title
+        in: formData
+        name: title_en
+        required: true
+        type: string
+      - description: Description
+        in: formData
+        name: desc
+        required: true
+        type: string
+      - description: Location
+        in: formData
+        name: location
+        required: true
+        type: string
+      - description: Date
+        in: formData
+        name: date
+        required: true
+        type: string
+      - description: Rating
+        in: formData
+        name: rating
+        required: true
+        type: string
+      - description: Link og pic
+        in: formData
+        name: pic
+        required: true
+        type: string
+      - description: Wiki url
+        in: formData
+        name: wiki_url
+        required: true
+        type: string
       produces:
       - application/json
       responses:

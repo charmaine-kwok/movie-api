@@ -93,13 +93,60 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Movie Information",
-                        "name": "RequestBody",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.PostMovieRequest"
-                        }
+                        "type": "string",
+                        "description": "Chinese title",
+                        "name": "title_zh",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "English title",
+                        "name": "title_en",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Description",
+                        "name": "desc",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Location",
+                        "name": "location",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Rating",
+                        "name": "rating",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Link og pic",
+                        "name": "pic",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Wiki url",
+                        "name": "wiki_url",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -300,35 +347,6 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.PostMovieRequest": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                },
-                "desc": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "pic": {
-                    "type": "string"
-                },
-                "rating": {
-                    "type": "string"
-                },
-                "title_en": {
-                    "type": "string"
-                },
-                "title_zh": {
-                    "type": "string"
-                },
-                "wiki_url": {
-                    "type": "string"
-                }
-            }
-        },
         "models.Movie": {
             "type": "object",
             "properties": {
@@ -390,8 +408,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "go-crud.fly.dev",
 	BasePath:         "/api",
 	Schemes:          []string{},
-	Title:            "Movie App",
-	Description:      "This is an API server for communication between mobile application and MongoDB Database",
+	Title:            "Movie Api",
+	Description:      "This is an API server for communication between mobile application and MongoDB Database.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
