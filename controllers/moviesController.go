@@ -160,3 +160,44 @@ func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
 		})
 	}
 }
+
+// @Summary Create movie entry
+// @Tags Movies
+// @Description Create movie entry
+// @Accept json
+// @Produce json
+// @Param type path string true "Type" Enums(movies, others)
+//
+// @Success 200 {object} MovieInformationResponse "Movie Information"
+// @Failure 400  "Invalid request body"
+// @Failure 500  "Internal server error"
+// @Router /movies/{type} [post]
+func CreateMovie(collectionName string, model models.Model) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Create a context with a timeout
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		// Bind the request body to the movie model
+		if err := c.ShouldBindJSON(model); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Invalid request body",
+			})
+			return
+		}
+
+		// Insert the movie into the database
+		_, err := initializers.DB.Collection(collectionName).InsertOne(ctx, model)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Internal server error",
+			})
+			return
+		}
+
+		// Respond with the created movie
+		c.JSON(http.StatusCreated, gin.H{
+			"item": model,
+		})
+	}
+}
