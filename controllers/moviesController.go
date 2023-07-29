@@ -15,6 +15,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+type PostMovieRequest models.Movie
+
 // swagger:model MovieInformationResponse
 type MoviesInformationResponse struct {
 	Items       []models.Movie `json:"items"`
@@ -167,19 +169,21 @@ func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param type path string true "Type" Enums(movies, others)
-//
+// @Param RequestBody body PostMovieRequest true "Movie Information"
+
 // @Success 200 {object} MovieInformationResponse "Movie Information"
 // @Failure 400  "Invalid request body"
 // @Failure 500  "Internal server error"
 // @Router /movies/{type} [post]
-func CreateMovie(collectionName string, model models.Model) gin.HandlerFunc {
+func CreateMovie(collectionName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Create a context with a timeout
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 
+		var req PostMovieRequest
 		// Bind the request body to the movie model
-		if err := c.ShouldBindJSON(model); err != nil {
+		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid request body",
 			})
@@ -187,7 +191,7 @@ func CreateMovie(collectionName string, model models.Model) gin.HandlerFunc {
 		}
 
 		// Insert the movie into the database
-		_, err := initializers.DB.Collection(collectionName).InsertOne(ctx, model)
+		_, err := initializers.DB.Collection(collectionName).InsertOne(ctx, req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": "Internal server error",
@@ -197,7 +201,7 @@ func CreateMovie(collectionName string, model models.Model) gin.HandlerFunc {
 
 		// Respond with the created movie
 		c.JSON(http.StatusCreated, gin.H{
-			"item": model,
+			"item": req,
 		})
 	}
 }
