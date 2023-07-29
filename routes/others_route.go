@@ -10,5 +10,5 @@ import (
 func SetupOthersRoutes(apiGroup *gin.RouterGroup) {
 	apiGroup.GET("/movies/others/details/:title", controllers.GetByTitle("Others", &models.Movie{}))
 	apiGroup.GET("/movies/others", controllers.GetAllWrapper("Others", &models.Movie{}))
-	apiGroup.POST("/movies/others", controllers.CreateMovie("Others", &models.Movie{}))
+	apiGroup.POST("/movies/others", controllers.CreateMovie("Others"))
 }
