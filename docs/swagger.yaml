@@ -36,13 +36,30 @@ definitions:
       totalPage:
         type: integer
     type: object
-  models.Movie:
+  controllers.PostMovieRequest:
     properties:
       date:
         type: string
       desc:
         type: string
-      id:
+      location:
+        type: string
+      pic:
+        type: string
+      rating:
+        type: string
+      title_en:
+        type: string
+      title_zh:
+        type: string
+      wiki_url:
+        type: string
+    type: object
+  models.Movie:
+    properties:
+      date:
+        type: string
+      desc:
         type: string
       location:
         type: string
@@ -62,8 +79,6 @@ definitions:
       date:
         type: string
       desc:
-        type: string
-      id:
         type: string
       location:
         type: string
@@ -92,6 +107,9 @@ paths:
       description: Get a list of movie information by type
       parameters:
       - description: Type
+        enum:
+        - movies
+        - others
         in: path
         name: type
         required: true
@@ -114,6 +132,39 @@ paths:
       summary: Get a list of movie information by type
       tags:
       - Movies
+    post:
+      consumes:
+      - application/json
+      description: Create movie entry
+      parameters:
+      - description: Type
+        enum:
+        - movies
+        - others
+        in: path
+        name: type
+        required: true
+        type: string
+      - description: Movie Information
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PostMovieRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movie Information
+          schema:
+            $ref: '#/definitions/controllers.MovieInformationResponse'
+        "400":
+          description: Invalid request body
+        "500":
+          description: Internal server error
+      summary: Create movie entry
+      tags:
+      - Movies
   /movies/{type}/details/{title}:
     get:
       consumes:
@@ -121,6 +172,9 @@ paths:
       description: Get movie information by Title
       parameters:
       - description: Type
+        enum:
+        - movies
+        - others
         in: path
         name: type
         required: true

@@ -36,6 +36,10 @@ const docTemplate = `{
                 "summary": "Get a list of movie information by type",
                 "parameters": [
                     {
+                        "enum": [
+                            "movies",
+                            "others"
+                        ],
                         "type": "string",
                         "description": "Type",
                         "name": "type",
@@ -63,6 +67,55 @@ const docTemplate = `{
                         "description": "Internal server error"
                     }
                 }
+            },
+            "post": {
+                "description": "Create movie entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Create movie entry",
+                "parameters": [
+                    {
+                        "enum": [
+                            "movies",
+                            "others"
+                        ],
+                        "type": "string",
+                        "description": "Type",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Movie Information",
+                        "name": "RequestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.PostMovieRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movie Information",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MovieInformationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
             }
         },
         "/movies/{type}/details/{title}": {
@@ -80,6 +133,10 @@ const docTemplate = `{
                 "summary": "Get movie information by Title",
                 "parameters": [
                     {
+                        "enum": [
+                            "movies",
+                            "others"
+                        ],
                         "type": "string",
                         "description": "Type",
                         "name": "type",
@@ -243,7 +300,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Movie": {
+        "controllers.PostMovieRequest": {
             "type": "object",
             "properties": {
                 "date": {
@@ -252,7 +309,33 @@ const docTemplate = `{
                 "desc": {
                     "type": "string"
                 },
-                "id": {
+                "location": {
+                    "type": "string"
+                },
+                "pic": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "string"
+                },
+                "title_en": {
+                    "type": "string"
+                },
+                "title_zh": {
+                    "type": "string"
+                },
+                "wiki_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Movie": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "desc": {
                     "type": "string"
                 },
                 "location": {
@@ -282,9 +365,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "desc": {
-                    "type": "string"
-                },
-                "id": {
                     "type": "string"
                 },
                 "location": {
