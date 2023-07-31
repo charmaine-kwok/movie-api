@@ -61,6 +61,7 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 		findOptions := options.Find()
 		findOptions.SetLimit(limit)
 		findOptions.SetSkip(skip)
+		findOptions.SetSort(bson.D{{"date", 1}})
 
 		var items []models.Model
 		totalItem, err := initializers.DB.Collection(collectionName).CountDocuments(ctx, bson.M{})
