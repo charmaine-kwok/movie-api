@@ -17,9 +17,9 @@ func init() {
 	initializers.ConnectToDB()
 }
 
-//	@title				     	Movie App
+//	@title				     	Movie Api
 //	@version					1.0.0
-//	@description				This is an API server for communication between mobile application and MongoDB Database
+//	@description				This is an API server for communication between mobile application and MongoDB Database.
 //	@host						go-crud.fly.dev
 //	@BasePath					/api
 //
