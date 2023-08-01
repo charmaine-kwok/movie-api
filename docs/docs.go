@@ -93,60 +93,13 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "Chinese title",
-                        "name": "title_zh",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "English title",
-                        "name": "title_en",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Description",
-                        "name": "desc",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Location",
-                        "name": "location",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Date",
-                        "name": "date",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Rating",
-                        "name": "rating",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Link og pic",
-                        "name": "pic",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Wiki url",
-                        "name": "wiki_url",
-                        "in": "formData",
-                        "required": true
+                        "description": "Movie details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Movie"
+                        }
                     }
                 ],
                 "responses": {
@@ -216,7 +169,7 @@ const docTemplate = `{
         },
         "/non-movies": {
             "get": {
-                "description": "Get a list of non-movies information by type",
+                "description": "Get a list of non-movies information",
                 "consumes": [
                     "application/json"
                 ],
@@ -226,7 +179,7 @@ const docTemplate = `{
                 "tags": [
                     "Non-movies"
                 ],
-                "summary": "Get a list of non-movies information by type",
+                "summary": "Get a list of non-movies information",
                 "parameters": [
                     {
                         "type": "string",
@@ -239,11 +192,49 @@ const docTemplate = `{
                     "200": {
                         "description": "Information",
                         "schema": {
-                            "$ref": "#/definitions/controllers.NonMovieListInformationResponse"
+                            "$ref": "#/definitions/controllers.NonMoviesInformationResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid type"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "description": "Create non-movie entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Non-movies"
+                ],
+                "summary": "Create non-movie entry",
+                "parameters": [
+                    {
+                        "description": "Non-Movie details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.NonMovie"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Non-Movie Information",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.NonMovieInformationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -327,7 +318,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.NonMovieListInformationResponse": {
+        "controllers.NonMoviesInformationResponse": {
             "type": "object",
             "properties": {
                 "currentPage": {
@@ -405,7 +396,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0.0",
-	Host:             "go-crud.fly.dev",
+	Host:             "localhost:8080",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Movie Api",
