@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type NonMovieListInformationResponse struct {
+type NonMoviesInformationResponse struct {
 	Items       []models.NonMovie `json:"items"`
 	TotalItem   int               `json:"totalItem"`
 	TotalPage   int               `json:"totalPage"`
@@ -25,7 +25,7 @@ type NonMovieInformationResponse struct {
 // @Produce json
 // @Param page query string false "Page Number"
 //
-// @Success 200 {object} NonMovieListInformationResponse "Information"
+// @Success 200 {object} NonMoviesInformationResponse "Information"
 // @Failure 400  "Invalid type"
 // @Failure 500  "Internal server error"
 // @Router /non-movies [get]
@@ -46,4 +46,18 @@ func GetAllNonMovies() gin.HandlerFunc {
 // @Router /non-movies/details/{title} [get]
 func GetNonMovieByTitle() gin.HandlerFunc {
 	return GetByTitle("Non-movies", &models.NonMovie{})
+}
+
+// @Summary Create non-movie entry
+// @Tags Non-movies
+// @Description Create non-movie entry
+// @Accept json
+// @Produce json
+// @Param body body models.NonMovie true "Non-Movie details"
+// @Success 200 {object} NonMovieInformationResponse "Non-Movie Information"
+// @Failure 400  "Invalid request body"
+// @Failure 500  "Internal server error"
+// @Router /non-movies [post]
+func CreateNonMovie(collectionName string) gin.HandlerFunc {
+	return CreateGeneric(collectionName, NonMovieCreator{})
 }
