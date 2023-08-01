@@ -61,7 +61,7 @@ func GetAllWrapper(collectionName string, model models.Model) gin.HandlerFunc {
 		findOptions := options.Find()
 		findOptions.SetLimit(limit)
 		findOptions.SetSkip(skip)
-		findOptions.SetSort(bson.D{{"date", 1}})
+		findOptions.SetSort(bson.D{{Key: "date", Value: 1}})
 
 		var items []models.Model
 		totalItem, err := initializers.DB.Collection(collectionName).CountDocuments(ctx, bson.M{})
@@ -168,45 +168,11 @@ func GetByTitle(collectionName string, model models.Model) gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param type path string true "Type" Enums(movies, others)
-// @param title_zh formData string true "Chinese title"
-// @param title_en formData string true "English title"
-// @param desc formData string true "Description"
-// @param location formData string true "Location"
-// @param date formData string true "Date"
-// @param rating formData string true "Rating"
-// @param pic formData string true "Pic link"
-// @param wiki_url formData string true "Wiki url"
+// @Param body body models.Movie true "Movie details"
 // @Success 200 {object} MovieInformationResponse "Movie Information"
 // @Failure 400  "Invalid request body"
 // @Failure 500  "Internal server error"
 // @Router /movies/{type} [post]
 func CreateMovie(collectionName string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// Create a context with a timeout
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-
-		var req models.Movie
-		// Bind the request body to the movie model
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Invalid request body",
-			})
-			return
-		}
-
-		// Insert the movie into the database
-		_, err := initializers.DB.Collection(collectionName).InsertOne(ctx, req)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": "Internal server error",
-			})
-			return
-		}
-
-		// Respond with the created movie
-		c.JSON(http.StatusCreated, gin.H{
-			"item": req,
-		})
-	}
+	return CreateGeneric(collectionName, MovieCreator{})
 }
