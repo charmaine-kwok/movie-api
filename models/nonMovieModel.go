@@ -1,16 +1,23 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type NonMovie struct {
-	Title    string    `json:"title"`
-	Desc     string    `json:"desc"`
-	Location string    `json:"location"`
-	Date     time.Time `json:"date"`
-	Rating   string    `json:"rating"`
-	Pic      string    `json:"pic"`
+	gorm.Model `json:"-"`
+	ID         uint      `json:"id" gorm:"primarykey"`
+	Title      string    `json:"title" binding:"required"`
+	Desc       string    `json:"desc" binding:"required"`
+	Location   string    `json:"location" binding:"required"`
+	Date       time.Time `json:"date" binding:"required"`
+	Rating     string    `json:"rating" binding:"required"`
+	Pic        string    `json:"pic" binding:"required"`
+	User_id    string    `json:"-"`
 }
 
-func (m *NonMovie) GetTitle() string {
-	return m.Title
+func (n *NonMovie) GetTitle() string {
+	return n.Title
 }

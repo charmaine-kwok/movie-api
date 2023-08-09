@@ -1,22 +1,29 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Model interface {
 	GetTitle() string
 }
 
 type Movie struct {
-	Title_zh string    `json:"title_zh"`
-	Title_en string    `json:"title_en"`
-	Desc     string    `json:"desc"`
-	Location string    `json:"location"`
-	Date     time.Time `json:"date"`
-	Rating   string    `json:"rating"`
-	Pic      string    `json:"pic"`
-	Wiki_url string    `json:"wiki_url"`
+	gorm.Model `json:"-"`
+	ID         uint      `json:"id" gorm:"primarykey"`
+	Title_zh   string    `json:"title_zh" binding:"required"`
+	Title      string    `json:"title" binding:"required"`
+	Desc       string    `json:"desc" binding:"required"`
+	Location   string    `json:"location" binding:"required"`
+	Date       time.Time `json:"date" binding:"required"`
+	Rating     string    `json:"rating" binding:"required"`
+	Pic        string    `json:"pic" binding:"required"`
+	Wiki_url   string    `json:"wiki_url"`
+	User_id    string    `json:"-"`
 }
 
 func (m *Movie) GetTitle() string {
-	return m.Title_en
+	return m.Title
 }
