@@ -21,9 +21,46 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/movies/{type}": {
+        "/login": {
+            "post": {
+                "description": "Login user",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Login user",
+                "parameters": [
+                    {
+                        "description": "User details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "JWT token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username or password"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/movies": {
             "get": {
-                "description": "Get a list of movie information by type",
+                "description": "Get a list of movie information",
                 "consumes": [
                     "application/json"
                 ],
@@ -33,17 +70,13 @@ const docTemplate = `{
                 "tags": [
                     "Movies"
                 ],
-                "summary": "Get a list of movie information by type",
+                "summary": "Get a list of movie information",
                 "parameters": [
                     {
-                        "enum": [
-                            "movies",
-                            "others"
-                        ],
                         "type": "string",
-                        "description": "Type",
-                        "name": "type",
-                        "in": "path",
+                        "description": "Server JWT Token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     },
                     {
@@ -57,11 +90,11 @@ const docTemplate = `{
                     "200": {
                         "description": "Movies Information",
                         "schema": {
-                            "$ref": "#/definitions/controllers.MoviesInformationResponse"
+                            "$ref": "#/definitions/controllers.MoviesListResponse"
                         }
                     },
                     "400": {
-                        "description": "Invalid type"
+                        "description": "Invalid user_id"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -82,14 +115,10 @@ const docTemplate = `{
                 "summary": "Create movie entry",
                 "parameters": [
                     {
-                        "enum": [
-                            "movies",
-                            "others"
-                        ],
                         "type": "string",
-                        "description": "Type",
-                        "name": "type",
-                        "in": "path",
+                        "description": "Server JWT Token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     },
                     {
@@ -98,15 +127,15 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Movie"
+                            "$ref": "#/definitions/controllers.MovieCreatorItem"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Movie Information",
                         "schema": {
-                            "$ref": "#/definitions/controllers.MovieInformationResponse"
+                            "$ref": "#/definitions/controllers.MovieItemResponse"
                         }
                     },
                     "400": {
@@ -118,9 +147,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/movies/{type}/details/{title}": {
+        "/movies/{itemId}": {
             "get": {
-                "description": "Get movie information by Title",
+                "description": "Get movie information by item id",
                 "consumes": [
                     "application/json"
                 ],
@@ -130,23 +159,19 @@ const docTemplate = `{
                 "tags": [
                     "Movies"
                 ],
-                "summary": "Get movie information by Title",
+                "summary": "Get movie information by item id",
                 "parameters": [
                     {
-                        "enum": [
-                            "movies",
-                            "others"
-                        ],
                         "type": "string",
-                        "description": "Type",
-                        "name": "type",
-                        "in": "path",
+                        "description": "Server JWT Token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "Title",
-                        "name": "title",
+                        "type": "number",
+                        "description": "Item id",
+                        "name": "itemId",
                         "in": "path",
                         "required": true
                     }
@@ -155,11 +180,11 @@ const docTemplate = `{
                     "200": {
                         "description": "Movie Information",
                         "schema": {
-                            "$ref": "#/definitions/controllers.MovieInformationResponse"
+                            "$ref": "#/definitions/controllers.MovieItemResponse"
                         }
                     },
-                    "400": {
-                        "description": "Invalid type"
+                    "404": {
+                        "description": "No item found"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -169,7 +194,7 @@ const docTemplate = `{
         },
         "/non-movies": {
             "get": {
-                "description": "Get a list of non-movies information",
+                "description": "Get a list of non-movie information",
                 "consumes": [
                     "application/json"
                 ],
@@ -179,8 +204,15 @@ const docTemplate = `{
                 "tags": [
                     "Non-movies"
                 ],
-                "summary": "Get a list of non-movies information",
+                "summary": "Get a list of non-movie information",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Server JWT Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Page Number",
@@ -190,13 +222,13 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Information",
+                        "description": "Non-Movie Information",
                         "schema": {
-                            "$ref": "#/definitions/controllers.NonMoviesInformationResponse"
+                            "$ref": "#/definitions/controllers.NonMoviesListResponse"
                         }
                     },
                     "400": {
-                        "description": "Invalid type"
+                        "description": "Invalid user_id"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -217,20 +249,27 @@ const docTemplate = `{
                 "summary": "Create non-movie entry",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Server JWT Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Non-Movie details",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.NonMovie"
+                            "$ref": "#/definitions/controllers.NonMovieCreatorItem"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Non-Movie Information",
                         "schema": {
-                            "$ref": "#/definitions/controllers.NonMovieInformationResponse"
+                            "$ref": "#/definitions/controllers.NonMovieItemResponse"
                         }
                     },
                     "400": {
@@ -242,9 +281,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/non-movies/details/{title}": {
+        "/non-movies/{itemId}": {
             "get": {
-                "description": "Get non-movie information by Title",
+                "description": "Get non-movie information by item id",
                 "consumes": [
                     "application/json"
                 ],
@@ -254,12 +293,19 @@ const docTemplate = `{
                 "tags": [
                     "Non-movies"
                 ],
-                "summary": "Get non-movie information by Title",
+                "summary": "Get non-movie information by item id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Title",
-                        "name": "title",
+                        "description": "Server JWT Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Item id",
+                        "name": "itemId",
                         "in": "path",
                         "required": true
                     }
@@ -268,11 +314,45 @@ const docTemplate = `{
                     "200": {
                         "description": "Non-Movie Information",
                         "schema": {
-                            "$ref": "#/definitions/controllers.NonMovieInformationResponse"
+                            "$ref": "#/definitions/controllers.NonMovieItemResponse"
                         }
                     },
+                    "404": {
+                        "description": "No item found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "description": "Create user",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create user",
+                "parameters": [
+                    {
+                        "description": "User details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User created"
+                    },
                     "400": {
-                        "description": "Invalid type"
+                        "description": "Invalid request body"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -282,7 +362,46 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "controllers.MovieInformationResponse": {
+        "controllers.MovieCreatorItem": {
+            "type": "object",
+            "required": [
+                "date",
+                "desc",
+                "location",
+                "pic",
+                "rating",
+                "title",
+                "title_zh",
+                "wiki_url"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "pic": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "title_zh": {
+                    "type": "string"
+                },
+                "wiki_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.MovieItemResponse": {
             "type": "object",
             "properties": {
                 "item": {
@@ -290,7 +409,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.MoviesInformationResponse": {
+        "controllers.MoviesListResponse": {
             "type": "object",
             "properties": {
                 "currentPage": {
@@ -310,7 +429,38 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.NonMovieInformationResponse": {
+        "controllers.NonMovieCreatorItem": {
+            "type": "object",
+            "required": [
+                "date",
+                "desc",
+                "location",
+                "pic",
+                "rating",
+                "title"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "pic": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.NonMovieItemResponse": {
             "type": "object",
             "properties": {
                 "item": {
@@ -318,7 +468,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.NonMoviesInformationResponse": {
+        "controllers.NonMoviesListResponse": {
             "type": "object",
             "properties": {
                 "currentPage": {
@@ -340,12 +490,24 @@ const docTemplate = `{
         },
         "models.Movie": {
             "type": "object",
+            "required": [
+                "date",
+                "desc",
+                "location",
+                "pic",
+                "rating",
+                "title",
+                "title_zh"
+            ],
             "properties": {
                 "date": {
                     "type": "string"
                 },
                 "desc": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "location": {
                     "type": "string"
@@ -356,7 +518,7 @@ const docTemplate = `{
                 "rating": {
                     "type": "string"
                 },
-                "title_en": {
+                "title": {
                     "type": "string"
                 },
                 "title_zh": {
@@ -369,12 +531,23 @@ const docTemplate = `{
         },
         "models.NonMovie": {
             "type": "object",
+            "required": [
+                "date",
+                "desc",
+                "location",
+                "pic",
+                "rating",
+                "title"
+            ],
             "properties": {
                 "date": {
                     "type": "string"
                 },
                 "desc": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "location": {
                     "type": "string"
@@ -386,6 +559,21 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
