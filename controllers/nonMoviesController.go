@@ -6,46 +6,42 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type NonMoviesInformationResponse struct {
-	Items       []models.NonMovie `json:"items"`
-	TotalItem   int               `json:"totalItem"`
-	TotalPage   int               `json:"totalPage"`
-	CurrentPage int               `json:"currentPage"`
-}
+// swagger:model NonMoviesListResponse
+type NonMoviesListResponse ListResponse[models.NonMovie]
 
-// swagger:model NonMovieInformationResponse
-type NonMovieInformationResponse struct {
+// swagger:model NonMovieItemResponse
+type NonMovieItemResponse struct {
 	Item models.NonMovie `json:"item"`
 }
 
-// @Summary Get a list of non-movies information
+// @Summary Get a list of non-movie information
 // @Tags Non-movies
-// @Description Get a list of non-movies information
+// @Description Get a list of non-movie information
 // @Accept json
 // @Produce json
+// @Param Authorization	header string true "Server JWT Token"
 // @Param page query string false "Page Number"
-//
-// @Success 200 {object} NonMoviesInformationResponse "Information"
-// @Failure 400  "Invalid type"
+// @Success 200 {object} NonMoviesListResponse "Non-Movie Information"
+// @Failure 400  "Invalid user_id"
 // @Failure 500  "Internal server error"
 // @Router /non-movies [get]
 func GetAllNonMovies() gin.HandlerFunc {
-	return GetAllWrapper("Non-movies", &models.NonMovie{})
+	return GetAllWrapper[models.NonMovie]()
 }
 
-// @Summary Get non-movie information by Title
+// @Summary Get non-movie information by item id
 // @Tags Non-movies
-// @Description Get non-movie information by Title
+// @Description Get non-movie information by item id
 // @Accept json
 // @Produce json
-// @Param title path string true "Title"
-//
-// @Success 200 {object} NonMovieInformationResponse "Non-Movie Information"
-// @Failure 400  "Invalid type"
+// @Param Authorization	header string true "Server JWT Token"
+// @Param itemId path string true "Item id"
+// @Success 200 {object} NonMovieItemResponse "Non-Movie Information"
+// @Failure 404  "No item found"
 // @Failure 500  "Internal server error"
-// @Router /non-movies/details/{title} [get]
-func GetNonMovieByTitle() gin.HandlerFunc {
-	return GetByTitle("Non-movies", &models.NonMovie{})
+// @Router /non-movies/{itemId} [get]
+func GetNonMoviesByItemId() gin.HandlerFunc {
+	return GetByItemId(&models.NonMovie{})
 }
 
 // @Summary Create non-movie entry
@@ -53,11 +49,12 @@ func GetNonMovieByTitle() gin.HandlerFunc {
 // @Description Create non-movie entry
 // @Accept json
 // @Produce json
-// @Param body body models.NonMovie true "Non-Movie details"
-// @Success 200 {object} NonMovieInformationResponse "Non-Movie Information"
+// @Param Authorization	header string true "Server JWT Token"
+// @Param body body NonMovieCreatorItem true "Non-Movie details"
+// @Success 201 {object} NonMovieItemResponse "Non-Movie Information"
 // @Failure 400  "Invalid request body"
 // @Failure 500  "Internal server error"
 // @Router /non-movies [post]
-func CreateNonMovie(collectionName string) gin.HandlerFunc {
-	return CreateGeneric(collectionName, NonMovieCreator{})
+func CreateNonMovies() gin.HandlerFunc {
+	return CreateGeneric(NonMovieCreator{})
 }
