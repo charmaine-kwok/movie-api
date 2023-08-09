@@ -3,6 +3,7 @@ package main
 import (
 	docs "go-crud/docs"
 	"go-crud/initializers"
+	"go-crud/middleware"
 	"go-crud/routes"
 	"os"
 
@@ -13,13 +14,17 @@ import (
 )
 
 func init() {
-	// initializers.LoadEnvVariables()
+	// initializers.LoadEnvVariables() // uncomment this line only for local use
 	initializers.ConnectToDB()
+	// initializers.SyncDatabase()
 }
 
 //	@title				     	Movie Api
 //	@version					1.0.0
 //	@description				This is an API server for communication between mobile application and MongoDB Database.
+//
+// go-crud.fly.dev=cloud localhost:8080=local
+//
 //	@host						go-crud.fly.dev
 //	@BasePath					/api
 //
@@ -43,12 +48,16 @@ func main() {
 		// Add Swagger documentation endpoint
 		apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+		// Register the users routes
+		routes.SetupUsersRoutes(apiGroup)
+
+		// Apply RequireAuth middleware to all requests below
+		apiGroup.Use(middleware.RequireAuth)
+
 		// Register the movies routes
 		routes.SetupMovieRoutes(apiGroup)
 		// Register the non-movies routes
 		routes.SetupNonMoviesRoutes(apiGroup)
-		// Register the others routes
-		routes.SetupOthersRoutes(apiGroup)
 	}
 
 	// Start the server
