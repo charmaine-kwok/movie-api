@@ -7,5 +7,6 @@ import (
 )
 
 func SetupUsersRoutes(apiGroup *gin.RouterGroup) {
-	apiGroup.POST("/user", controllers.CreateUser())
+	apiGroup.POST("/user", controllers.CreateUser)
+	apiGroup.POST("/login", controllers.Login)
 }

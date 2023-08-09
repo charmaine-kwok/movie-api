@@ -7,7 +7,7 @@ import (
 )
 
 func SetupNonMoviesRoutes(apiGroup *gin.RouterGroup) {
-	apiGroup.GET("/non-movies/details/:title", controllers.GetNonMovieByTitle())
 	apiGroup.GET("/non-movies", controllers.GetAllNonMovies())
-	apiGroup.POST("/non-movies", controllers.CreateNonMovie("Non-movies"))
+	apiGroup.GET("/non-movies/:item_id", controllers.GetNonMoviesByItemId())
+	apiGroup.POST("/non-movies", controllers.CreateNonMovies())
 }
