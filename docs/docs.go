@@ -371,33 +371,40 @@ const docTemplate = `{
                 "pic",
                 "rating",
                 "title",
-                "title_zh",
-                "wiki_url"
+                "title_zh"
             ],
             "properties": {
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "01-11-2023"
                 },
                 "desc": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "A very good movie."
                 },
                 "location": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "K11"
                 },
                 "pic": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg"
                 },
                 "rating": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "9.0"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "黑色追緝令"
                 },
                 "title_zh": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Pulp Fiction"
                 },
                 "wiki_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://en.wikipedia.org/wiki/Pulp_Fiction"
                 }
             }
         },
@@ -413,7 +420,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "currentPage": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "items": {
                     "type": "array",
@@ -422,10 +430,12 @@ const docTemplate = `{
                     }
                 },
                 "totalItem": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "totalPage": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -441,22 +451,28 @@ const docTemplate = `{
             ],
             "properties": {
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "15-02-2023"
                 },
                 "desc": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "So great to see WESTLIFE live!"
                 },
                 "location": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "ASIAWORLD-ARENA"
                 },
                 "pic": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://res.klook.com/image/upload/v1670553795/sn2b41ae5zpobabcxya4.jpg"
                 },
                 "rating": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "9.0"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Westlife The Wild Dreams Tour"
                 }
             }
         },
@@ -472,7 +488,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "currentPage": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "items": {
                     "type": "array",
@@ -481,10 +498,12 @@ const docTemplate = `{
                     }
                 },
                 "totalItem": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "totalPage": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -501,31 +520,40 @@ const docTemplate = `{
             ],
             "properties": {
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2023-02-15T00:00:00+00"
                 },
                 "desc": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "A very good movie."
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "location": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "K11"
                 },
                 "pic": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg"
                 },
                 "rating": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "9.0"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "黑色追緝令"
                 },
                 "title_zh": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Pulp Fiction"
                 },
                 "wiki_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://en.wikipedia.org/wiki/Pulp_Fiction"
                 }
             }
         },
@@ -541,25 +569,32 @@ const docTemplate = `{
             ],
             "properties": {
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2023-02-15T00:00:00+00"
                 },
                 "desc": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "So great to see WESTLIFE live!"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 5
                 },
                 "location": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "ASIAWORLD-ARENA"
                 },
                 "pic": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://res.klook.com/image/upload/v1670553795/sn2b41ae5zpobabcxya4.jpg"
                 },
                 "rating": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "9.0"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Westlife The Wild Dreams Tour"
                 }
             }
         },
@@ -571,10 +606,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "password"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "user"
                 }
             }
         }
@@ -584,11 +621,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0.0",
-	Host:             "localhost:8080",
+	Host:             "go-crud.fly.dev",
 	BasePath:         "/api",
-	Schemes:          []string{},
+	Schemes:          []string{"https"},
 	Title:            "Movie Api",
-	Description:      "This is an API server for communication between mobile application and MongoDB Database.",
+	Description:      "This is an API server for communication between mobile application and PostgreSQL Database.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

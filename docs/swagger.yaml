@@ -3,20 +3,28 @@ definitions:
   controllers.MovieCreatorItem:
     properties:
       date:
+        example: 01-11-2023
         type: string
       desc:
+        example: A very good movie.
         type: string
       location:
+        example: K11
         type: string
       pic:
+        example: https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg
         type: string
       rating:
+        example: "9.0"
         type: string
       title:
+        example: 黑色追緝令
         type: string
       title_zh:
+        example: Pulp Fiction
         type: string
       wiki_url:
+        example: https://en.wikipedia.org/wiki/Pulp_Fiction
         type: string
     required:
     - date
@@ -26,7 +34,6 @@ definitions:
     - rating
     - title
     - title_zh
-    - wiki_url
     type: object
   controllers.MovieItemResponse:
     properties:
@@ -36,29 +43,38 @@ definitions:
   controllers.MoviesListResponse:
     properties:
       currentPage:
+        example: 1
         type: integer
       items:
         items:
           $ref: '#/definitions/models.Movie'
         type: array
       totalItem:
+        example: 1
         type: integer
       totalPage:
+        example: 1
         type: integer
     type: object
   controllers.NonMovieCreatorItem:
     properties:
       date:
+        example: 15-02-2023
         type: string
       desc:
+        example: So great to see WESTLIFE live!
         type: string
       location:
+        example: ASIAWORLD-ARENA
         type: string
       pic:
+        example: https://res.klook.com/image/upload/v1670553795/sn2b41ae5zpobabcxya4.jpg
         type: string
       rating:
+        example: "9.0"
         type: string
       title:
+        example: Westlife The Wild Dreams Tour
         type: string
     required:
     - date
@@ -76,35 +92,47 @@ definitions:
   controllers.NonMoviesListResponse:
     properties:
       currentPage:
+        example: 1
         type: integer
       items:
         items:
           $ref: '#/definitions/models.NonMovie'
         type: array
       totalItem:
+        example: 1
         type: integer
       totalPage:
+        example: 1
         type: integer
     type: object
   models.Movie:
     properties:
       date:
+        example: 2023-02-15T00:00:00+00
         type: string
       desc:
+        example: A very good movie.
         type: string
       id:
+        example: 1
         type: integer
       location:
+        example: K11
         type: string
       pic:
+        example: https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg
         type: string
       rating:
+        example: "9.0"
         type: string
       title:
+        example: 黑色追緝令
         type: string
       title_zh:
+        example: Pulp Fiction
         type: string
       wiki_url:
+        example: https://en.wikipedia.org/wiki/Pulp_Fiction
         type: string
     required:
     - date
@@ -118,18 +146,25 @@ definitions:
   models.NonMovie:
     properties:
       date:
+        example: 2023-02-15T00:00:00+00
         type: string
       desc:
+        example: So great to see WESTLIFE live!
         type: string
       id:
+        example: 5
         type: integer
       location:
+        example: ASIAWORLD-ARENA
         type: string
       pic:
+        example: https://res.klook.com/image/upload/v1670553795/sn2b41ae5zpobabcxya4.jpg
         type: string
       rating:
+        example: "9.0"
         type: string
       title:
+        example: Westlife The Wild Dreams Tour
         type: string
     required:
     - date
@@ -142,19 +177,21 @@ definitions:
   models.User:
     properties:
       password:
+        example: password
         type: string
       username:
+        example: user
         type: string
     required:
     - password
     - username
     type: object
-host: localhost:8080
+host: go-crud.fly.dev
 info:
   contact:
     name: charmaine.kwok
   description: This is an API server for communication between mobile application
-    and MongoDB Database.
+    and PostgreSQL Database.
   license:
     name: Apache 2.0
   title: Movie Api
@@ -384,4 +421,6 @@ paths:
       summary: Create user
       tags:
       - Users
+schemes:
+- https
 swagger: "2.0"
