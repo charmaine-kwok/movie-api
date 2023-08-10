@@ -13,15 +13,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// @Summary Create user
-// @Tags Users
-// @Description Create user
-// @Accept json
-// @Param body body models.User true "User details"
-// @Success 201 "User created"
-// @Failure 400 "Invalid request body"
-// @Failure	500 "Internal server error"
-// @Router /user [post]
+// CreateUser creates user
+//
+//	@Summary		Create user
+//	@Tags			Users
+//	@Description	Create user
+//	@Accept			json
+//	@Param			body	body	models.User	true	"User details"
+//	@Success		201		"User created"
+//	@Failure		400		"Invalid request body"
+//	@Failure		500		"Internal server error"
+//	@Router			/user [post]
 func CreateUser(c *gin.Context) {
 	// Create a context with a timeout
 	_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -56,15 +58,17 @@ func CreateUser(c *gin.Context) {
 	c.String(http.StatusCreated, "User created")
 }
 
-// @Summary Login user
-// @Tags Users
-// @Description Login user
-// @Accept json
-// @Param body body models.User true "User details"
-// @Success 200 {string} string "JWT token"
-// @Failure 400 "Invalid username or password"
-// @Failure	500 "Internal server error"
-// @Router /login [post]
+// Login user
+//
+//	@Summary		Login user
+//	@Tags			Users
+//	@Description	Login user
+//	@Accept			json
+//	@Param			body	body		models.User	true	"User details"
+//	@Success		200		{string}	string		"JWT token"
+//	@Failure		400		"Invalid username or password"
+//	@Failure		500		"Internal server error"
+//	@Router			/login [post]
 func Login(c *gin.Context) {
 	// Create a context with a timeout
 	_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
