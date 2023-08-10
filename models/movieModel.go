@@ -20,7 +20,7 @@ type Movie struct {
 	Date       time.Time `json:"date" binding:"required"`
 	Rating     string    `json:"rating" binding:"required"`
 	Pic        string    `json:"pic" binding:"required"`
-	Wiki_url   string    `json:"wiki_url"`
+	Wiki_url   string    `json:"wiki_url,omitempty"`
 	User_id    string    `json:"-"`
 }
 
