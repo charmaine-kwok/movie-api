@@ -19,18 +19,18 @@ func init() {
 	// initializers.SyncDatabase()
 }
 
-//	@title				     	Movie Api
-//	@version					1.0.0
-//	@description				This is an API server for communication between mobile application and MongoDB Database.
+//	@title			Movie Api
+//	@version		1.0.0
+//	@description	This is an API server for communication between mobile application and PostgreSQL Database.
 //
 // go-crud.fly.dev=cloud localhost:8080=local
 //
-//	@host						go-crud.fly.dev
-//	@BasePath					/api
+//	@host			go-crud.fly.dev
+//	@BasePath		/api
+//	@contact.name	charmaine.kwok
+//	@license.name	Apache 2.0
 //
-// @contact.name charmaine.kwok
-// @license.name Apache 2.0
-// schemes https
+//	@schemes		https
 func main() {
 	// Read the environment variable and set the Gin mode based on the environment variable
 	if env := os.Getenv("GIN_MODE"); env == "release" {
