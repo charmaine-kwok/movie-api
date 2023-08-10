@@ -15,7 +15,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetAllWrapper[T modelType]() gin.HandlerFunc {
+func GetAllWrapper[T models.Model]() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Create a context with a timeout
 		_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -65,16 +65,16 @@ func GetAllWrapper[T modelType]() gin.HandlerFunc {
 			return
 		}
 		// Respond with the items
-		c.JSON(http.StatusOK, gin.H{
-			"items":       &items,
-			"totalItem":   totalItem,
-			"totalPage":   totalPage,
-			"currentPage": page,
+		c.JSON(http.StatusOK, ListResponse[T]{
+			Items:       &items,
+			CurrentPage: page,
+			TotalItem:   totalItem,
+			TotalPage:   totalPage,
 		})
 	}
 }
 
-func GetByItemId(item models.Model) gin.HandlerFunc {
+func GetByItemId[T models.Model]() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Create a context with a timeout
 		_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -82,6 +82,8 @@ func GetByItemId(item models.Model) gin.HandlerFunc {
 
 		// Get the title from the title parameter
 		itemId := c.Param("item_id")
+
+		var item T
 
 		// Retrieve the movies with pagination and sorting
 		err := initializers.DB.Where("id = ?", itemId).First(&item).Error
@@ -98,9 +100,9 @@ func GetByItemId(item models.Model) gin.HandlerFunc {
 			return
 		}
 
-		// Respond with the movie
-		c.JSON(http.StatusOK, gin.H{
-			"item": &item,
+		// Respond with the item
+		c.JSON(http.StatusOK, ItemResponse[T]{
+			Item: item,
 		})
 	}
 }
@@ -114,28 +116,24 @@ func parseAndValidateDate(date string) (time.Time, error) {
 	return parsedDate, nil
 }
 
-type modelType interface {
-	models.Movie | models.NonMovie
-}
-
 type Creator interface {
-	Create(c *gin.Context) (interface{}, error)
+	Create(c *gin.Context) (models.Model, error)
 }
 
 type MovieCreator struct{}
 
 type MovieCreatorItem struct {
-	Title_zh string `json:"title_zh" binding:"required"`
-	Title    string `json:"title" binding:"required"`
-	Desc     string `json:"desc" binding:"required"`
-	Location string `json:"location" binding:"required"`
-	Date     string `json:"date" binding:"required"`
-	Rating   string `json:"rating" binding:"required"`
-	Pic      string `json:"pic" binding:"required"`
-	Wiki_url string `json:"wiki_url" binding:"required"`
+	Title_zh string `json:"title_zh" binding:"required" example:"Pulp Fiction"`
+	Title    string `json:"title" binding:"required" example:"黑色追緝令"`
+	Desc     string `json:"desc" binding:"required" example:"A very good movie."`
+	Location string `json:"location" binding:"required" example:"K11"`
+	Date     string `json:"date" binding:"required" example:"01-11-2023"`
+	Rating   string `json:"rating" binding:"required" example:"9.0"`
+	Pic      string `json:"pic" binding:"required" example:"https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg"`
+	Wiki_url string `json:"wiki_url,omitempty" example:"https://en.wikipedia.org/wiki/Pulp_Fiction"`
 }
 
-func (mc MovieCreator) Create(c *gin.Context) (interface{}, error) {
+func (mc MovieCreator) Create(c *gin.Context) (models.Model, error) {
 	var t MovieCreatorItem
 
 	if err := c.ShouldBindJSON(&t); err != nil {
@@ -163,15 +161,15 @@ func (mc MovieCreator) Create(c *gin.Context) (interface{}, error) {
 type NonMovieCreator struct{}
 
 type NonMovieCreatorItem struct {
-	Title    string `json:"title" binding:"required"`
-	Desc     string `json:"desc" binding:"required"`
-	Location string `json:"location" binding:"required"`
-	Date     string `json:"date" binding:"required"`
-	Rating   string `json:"rating" binding:"required"`
-	Pic      string `json:"pic" binding:"required"`
+	Title    string `json:"title" binding:"required" example:"Westlife The Wild Dreams Tour"`
+	Desc     string `json:"desc" binding:"required" example:"So great to see WESTLIFE live!"`
+	Location string `json:"location" binding:"required" example:"ASIAWORLD-ARENA"`
+	Date     string `json:"date" binding:"required" example:"15-02-2023"`
+	Rating   string `json:"rating" binding:"required" example:"9.0"`
+	Pic      string `json:"pic" binding:"required" example:"https://res.klook.com/image/upload/v1670553795/sn2b41ae5zpobabcxya4.jpg"`
 }
 
-func (nmc NonMovieCreator) Create(c *gin.Context) (interface{}, error) {
+func (nmc NonMovieCreator) Create(c *gin.Context) (models.Model, error) {
 	var t NonMovieCreatorItem
 
 	if err := c.ShouldBindJSON(&t); err != nil {
@@ -194,12 +192,15 @@ func (nmc NonMovieCreator) Create(c *gin.Context) (interface{}, error) {
 	}, nil
 }
 
-func CreateGeneric(creator Creator) gin.HandlerFunc {
+func CreateGeneric[T Creator]() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// Create a context with a timeout
 		_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 
-		item, err := creator.Create(c)
+		var GCreator T
+
+		item, err := GCreator.Create(c)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
