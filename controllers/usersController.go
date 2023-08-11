@@ -122,3 +122,8 @@ func Login(c *gin.Context) {
 	c.Header("Content-Type", "text/plain")
 	c.String(http.StatusOK, tokenString)
 }
+
+func ValidateJWT(c *gin.Context) {
+	c.Header("Content-Type", "text/plain")
+	c.String(http.StatusOK, "OK")
+}
