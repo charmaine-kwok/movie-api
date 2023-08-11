@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go-crud/controllers"
 	docs "go-crud/docs"
 	"go-crud/initializers"
 	"go-crud/middleware"
@@ -47,6 +48,9 @@ func main() {
 	{
 		// Add Swagger documentation endpoint
 		apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+		// route to validate JWT
+		apiGroup.GET("/validate", middleware.RequireAuth, controllers.ValidateJWT)
 
 		// Register the users routes
 		routes.SetupUsersRoutes(apiGroup)
