@@ -3,28 +3,28 @@ definitions:
   controllers.MovieCreatorItem:
     properties:
       date:
-        example: 01-11-2023
+        example: dd-mm-yyyy
         type: string
       desc:
-        example: A very good movie.
+        example: movie description
         type: string
       location:
-        example: K11
+        example: location
         type: string
       pic:
-        example: https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg
+        example: pic url of movie
         type: string
       rating:
         example: "9.0"
         type: string
       title:
-        example: 黑色追緝令
+        example: title in English
         type: string
       title_zh:
-        example: Pulp Fiction
+        example: title in Chinese
         type: string
       wiki_url:
-        example: https://en.wikipedia.org/wiki/Pulp_Fiction
+        example: wiki url of movie
         type: string
     required:
     - date
@@ -59,22 +59,22 @@ definitions:
   controllers.NonMovieCreatorItem:
     properties:
       date:
-        example: 15-02-2023
+        example: dd-mm-yyyy
         type: string
       desc:
-        example: So great to see WESTLIFE live!
+        example: item description
         type: string
       location:
-        example: ASIAWORLD-ARENA
+        example: location
         type: string
       pic:
-        example: https://res.klook.com/image/upload/v1670553795/sn2b41ae5zpobabcxya4.jpg
+        example: pic url of item
         type: string
       rating:
         example: "9.0"
         type: string
       title:
-        example: Westlife The Wild Dreams Tour
+        example: title
         type: string
     required:
     - date

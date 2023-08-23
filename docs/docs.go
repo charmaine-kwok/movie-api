@@ -376,19 +376,19 @@ const docTemplate = `{
             "properties": {
                 "date": {
                     "type": "string",
-                    "example": "01-11-2023"
+                    "example": "dd-mm-yyyy"
                 },
                 "desc": {
                     "type": "string",
-                    "example": "A very good movie."
+                    "example": "movie description"
                 },
                 "location": {
                     "type": "string",
-                    "example": "K11"
+                    "example": "location"
                 },
                 "pic": {
                     "type": "string",
-                    "example": "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg"
+                    "example": "pic url of movie"
                 },
                 "rating": {
                     "type": "string",
@@ -396,15 +396,15 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string",
-                    "example": "黑色追緝令"
+                    "example": "title in English"
                 },
                 "title_zh": {
                     "type": "string",
-                    "example": "Pulp Fiction"
+                    "example": "title in Chinese"
                 },
                 "wiki_url": {
                     "type": "string",
-                    "example": "https://en.wikipedia.org/wiki/Pulp_Fiction"
+                    "example": "wiki url of movie"
                 }
             }
         },
@@ -452,19 +452,19 @@ const docTemplate = `{
             "properties": {
                 "date": {
                     "type": "string",
-                    "example": "15-02-2023"
+                    "example": "dd-mm-yyyy"
                 },
                 "desc": {
                     "type": "string",
-                    "example": "So great to see WESTLIFE live!"
+                    "example": "item description"
                 },
                 "location": {
                     "type": "string",
-                    "example": "ASIAWORLD-ARENA"
+                    "example": "location"
                 },
                 "pic": {
                     "type": "string",
-                    "example": "https://res.klook.com/image/upload/v1670553795/sn2b41ae5zpobabcxya4.jpg"
+                    "example": "pic url of item"
                 },
                 "rating": {
                     "type": "string",
@@ -472,7 +472,7 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string",
-                    "example": "Westlife The Wild Dreams Tour"
+                    "example": "title"
                 }
             }
         },
