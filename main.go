@@ -55,11 +55,15 @@ func main() {
 		// Register the users routes
 		routes.SetupUsersRoutes(apiGroup)
 
+		// Register the route to fetch user info calling google api
+		apiGroup.GET("/userInfo", controllers.GoogleOAuth2GetUserInfo)
+
 		// Apply RequireAuth middleware to all requests below
 		apiGroup.Use(middleware.RequireAuth)
 
 		// Register the movies routes
 		routes.SetupMovieRoutes(apiGroup)
+
 		// Register the non-movies routes
 		routes.SetupNonMoviesRoutes(apiGroup)
 	}
