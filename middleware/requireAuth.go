@@ -62,9 +62,7 @@ func RequireAuth(c *gin.Context) {
 			return
 		}
 
-		// Attach to req
 		USER_ID = strconv.FormatUint(uint64(user.ID), 10)
-		c.Set("user_id", strconv.FormatUint(uint64(user.ID), 10))
 
 		// Continue
 		c.Next()
