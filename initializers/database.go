@@ -18,5 +18,4 @@ func ConnectToDB() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	_ = DB
 }
