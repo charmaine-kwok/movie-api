@@ -123,14 +123,14 @@ type Creator interface {
 type MovieCreator struct{}
 
 type MovieCreatorItem struct {
-	Title_zh string `json:"title_zh" binding:"required" example:"Pulp Fiction"`
-	Title    string `json:"title" binding:"required" example:"黑色追緝令"`
-	Desc     string `json:"desc" binding:"required" example:"A very good movie."`
-	Location string `json:"location" binding:"required" example:"K11"`
-	Date     string `json:"date" binding:"required" example:"01-11-2023"`
+	Title_zh string `json:"title_zh" binding:"required" example:"title in Chinese"`
+	Title    string `json:"title" binding:"required" example:"title in English"`
+	Desc     string `json:"desc" binding:"required" example:"movie description"`
+	Location string `json:"location" binding:"required" example:"location"`
+	Date     string `json:"date" binding:"required" example:"dd-mm-yyyy"`
 	Rating   string `json:"rating" binding:"required" example:"9.0"`
-	Pic      string `json:"pic" binding:"required" example:"https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg"`
-	Wiki_url string `json:"wiki_url,omitempty" example:"https://en.wikipedia.org/wiki/Pulp_Fiction"`
+	Pic      string `json:"pic" binding:"required" example:"pic url of movie"`
+	Wiki_url string `json:"wiki_url,omitempty" example:"wiki url of movie"`
 }
 
 func (mc MovieCreator) Create(c *gin.Context) (models.Model, error) {
@@ -161,12 +161,12 @@ func (mc MovieCreator) Create(c *gin.Context) (models.Model, error) {
 type NonMovieCreator struct{}
 
 type NonMovieCreatorItem struct {
-	Title    string `json:"title" binding:"required" example:"Westlife The Wild Dreams Tour"`
-	Desc     string `json:"desc" binding:"required" example:"So great to see WESTLIFE live!"`
-	Location string `json:"location" binding:"required" example:"ASIAWORLD-ARENA"`
-	Date     string `json:"date" binding:"required" example:"15-02-2023"`
+	Title    string `json:"title" binding:"required" example:"title"`
+	Desc     string `json:"desc" binding:"required" example:"item description"`
+	Location string `json:"location" binding:"required" example:"location"`
+	Date     string `json:"date" binding:"required" example:"dd-mm-yyyy"`
 	Rating   string `json:"rating" binding:"required" example:"9.0"`
-	Pic      string `json:"pic" binding:"required" example:"https://res.klook.com/image/upload/v1670553795/sn2b41ae5zpobabcxya4.jpg"`
+	Pic      string `json:"pic" binding:"required" example:"pic url of item"`
 }
 
 func (nmc NonMovieCreator) Create(c *gin.Context) (models.Model, error) {
