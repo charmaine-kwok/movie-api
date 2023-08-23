@@ -95,7 +95,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// Compare sent in pass with saved user password hash
+	// Compare sent-in password with saved user password hash only if there is a value for body.Password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid username or password",
@@ -103,6 +103,42 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// Generate and respond with JWT
+	JWTHandler(c, user)
+}
+
+func LoginWithEmail(c *gin.Context) {
+	// Create a context with a timeout
+	_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var body models.Email
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	var user models.User
+
+	// Look up requested user
+	initializers.DB.First(&user, "email = ?", body.Email)
+
+	if user.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid email",
+		})
+		return
+	}
+
+	// Generate and respond with JWT
+	JWTHandler(c, user)
+}
+
+// Generate and respond with JWT
+func JWTHandler(c *gin.Context, user models.User) {
 	// Generate a jwt token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": user.ID,
