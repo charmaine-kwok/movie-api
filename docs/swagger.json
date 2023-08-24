@@ -80,6 +80,12 @@
                         "description": "Page Number",
                         "name": "page",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by",
+                        "name": "order_by",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -213,6 +219,12 @@
                         "type": "string",
                         "description": "Page Number",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by",
+                        "name": "order_by",
                         "in": "query"
                     }
                 ],

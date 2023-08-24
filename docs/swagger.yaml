@@ -236,6 +236,10 @@ paths:
         in: query
         name: page
         type: string
+      - description: Order by
+        in: query
+        name: order_by
+        type: string
       produces:
       - application/json
       responses:
@@ -324,6 +328,10 @@ paths:
       - description: Page Number
         in: query
         name: page
+        type: string
+      - description: Order by
+        in: query
+        name: order_by
         type: string
       produces:
       - application/json

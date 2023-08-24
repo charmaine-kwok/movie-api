@@ -84,6 +84,12 @@ const docTemplate = `{
                         "description": "Page Number",
                         "name": "page",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by",
+                        "name": "order_by",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -217,6 +223,12 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Page Number",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by",
+                        "name": "order_by",
                         "in": "query"
                     }
                 ],
