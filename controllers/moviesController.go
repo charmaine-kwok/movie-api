@@ -30,6 +30,7 @@ type MovieItemResponse ItemResponse[*models.Movie]
 //	@Produce		json
 //	@Param			Authorization	header		string				true	"Server JWT Token"
 //	@Param			page			query		string				false	"Page Number"
+//	@Param			order_by		query		string				false	"Order by"
 //	@Success		200				{object}	MoviesListResponse	"Movies Information"
 //	@Failure		400				"Invalid user_id"
 //	@Failure		500				"Internal server error"
