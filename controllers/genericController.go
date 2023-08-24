@@ -30,6 +30,15 @@ func GetAllWrapper[T models.Model]() gin.HandlerFunc {
 			return
 		}
 
+		// Get the order_by from the query parameters
+		order_by := c.DefaultQuery("order_by", "ASC")
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "Invalid order",
+			})
+			return
+		}
+
 		var user models.User
 		result := initializers.DB.Where("id = ?", middleware.USER_ID).First(&user)
 		if result.Error != nil {
@@ -57,7 +66,7 @@ func GetAllWrapper[T models.Model]() gin.HandlerFunc {
 		totalPage := (int(totalItem)-1)/limit + 1
 
 		// Retrieve the movies with pagination and sorting
-		err = initializers.DB.Limit(10).Offset(offset).Where("user_id = ?", "1").Order("date").Find(&items).Error
+		err = initializers.DB.Limit(10).Offset(offset).Where("user_id = ?", "1").Order("date " + order_by).Find(&items).Error
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": "Failed to retrieve items",
