@@ -47,7 +47,7 @@ func main() {
 	apiGroup := r.Group("/api")
 	{
 		// Add Swagger documentation endpoint
-		apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		apiGroup.GET("/swagger/*any", middleware.SwaggerAuth(), ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 		// route to validate JWT
 		apiGroup.GET("/validate", middleware.RequireAuth, controllers.ValidateJWT)
